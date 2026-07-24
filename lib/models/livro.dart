@@ -2,16 +2,19 @@ class Livro {
   String id;
   String titulo;
   String autor;
-  bool emprestado;
+  bool emprestado = false;
 
-  Livro(this.id, this.titulo, this.autor, {this.emprestado = false});
+  Livro(this.id, this.titulo, this.autor);
 
   String paraTexto() {
     return '$id;$titulo;$autor;$emprestado';
   }
 
-  @override
-  String toString() {
-    return 'ID: $id | Título: $titulo | Autor: $autor | Status: ${emprestado ? "Emprestado" : "Disponível"}';
+  String mostrar() {
+    var status = 'Disponível';
+    if (emprestado) {
+      status = 'Emprestado';
+    }
+    return 'ID: $id | Título: $titulo | Autor: $autor | Status: $status';
   }
 }

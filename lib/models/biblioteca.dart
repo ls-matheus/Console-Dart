@@ -31,7 +31,7 @@ class BibliotecaApp {
     var arquivo = File('Cache/livros.txt');
     var texto = '';
     for (var livro in meusLivros) {
-      texto += livro.paraTexto() + '\n';
+      texto = texto + livro.paraTexto() + '\n';
     }
     arquivo.writeAsStringSync(texto);
   }
@@ -48,7 +48,7 @@ class BibliotecaApp {
       return;
     }
     for (var livro in meusLivros) {
-      print(livro);
+      print(livro.mostrar());
     }
   }
 
@@ -56,7 +56,7 @@ class BibliotecaApp {
     var achou = false;
     for (var livro in meusLivros) {
       if (livro.titulo.toLowerCase().contains(nome.toLowerCase())) {
-        print(livro);
+        print(livro.mostrar());
         achou = true;
       }
     }
