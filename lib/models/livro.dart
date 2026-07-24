@@ -26,6 +26,6 @@ class Livro {
 
   @override
   String toString() {
-    return 'ID: $id | Título: $titulo | Autor: $autor | Emprestado: ${emprestado ? "Sim" : "Não"}';
+    return 'ID: $id | Título: $titulo | Autor: $autor | Status: ${emprestado ? "Emprestado" : "Disponível"}';
   }
 }

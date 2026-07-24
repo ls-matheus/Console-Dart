@@ -2,20 +2,28 @@ import 'dart:io';
 import '../lib/models/livro.dart';
 import '../lib/models/biblioteca.dart';
 
+void limparTela() {
+  print('\x1B[2J\x1B[0;0H');
+}
+
 void main() {
   var sistema = BibliotecaApp();
   var rodando = true;
 
   while (rodando) {
-    print('\n--- Sistema de Biblioteca ---');
-    print('1. Cadastrar livro');
-    print('2. Listar livros');
-    print('3. Pesquisar livro pelo título');
-    print('4. Emprestar livro');
-    print('5. Devolver livro');
-    print('6. Remover livro');
-    print('0. Sair');
-    print('Escolha uma opção:');
+    limparTela();
+    print('=====================================');
+    print('       SISTEMA DE BIBLIOTECA         ');
+    print('=====================================');
+    print('[ 1 ] Cadastrar livro');
+    print('[ 2 ] Listar livros');
+    print('[ 3 ] Pesquisar livro pelo título');
+    print('[ 4 ] Emprestar livro');
+    print('[ 5 ] Devolver livro');
+    print('[ 6 ] Remover livro');
+    print('[ 0 ] Sair');
+    print('=====================================');
+    stdout.write('Escolha uma opção: ');
 
     var opcao = stdin.readLineSync();
     var espera = true;
