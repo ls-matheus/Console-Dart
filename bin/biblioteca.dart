@@ -25,7 +25,14 @@ void main() {
     print('=====================================');
     stdout.write('Escolha uma opção: ');
 
-    var opcao = stdin.readLineSync();
+    stdin.echoMode = false;
+    stdin.lineMode = false;
+    var byte = stdin.readByteSync();
+    var opcao = String.fromCharCode(byte);
+    stdin.lineMode = true;
+    stdin.echoMode = true;
+    print(opcao);
+
     var espera = true;
 
     switch (opcao) {
