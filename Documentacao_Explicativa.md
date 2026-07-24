@@ -1,6 +1,6 @@
 # Estrutura do Sistema de Biblioteca
 
-Esta é a documentação do projeto.
+Documentação do projeto.
 
 ---
 
@@ -16,11 +16,10 @@ O código foi dividido em pastas:
 
 ## Arquivo: `lib/models/livro.dart`
 
-Este arquivo contém a classe `Livro`.
+Tem a classe `Livro` com as informações de cada livro.
 
 * **`class Livro`**: Tem um `id`, um `titulo`, um `autor` e a variavel `emprestado`.
-* **`toMap()`**: Converte o objeto para salvar em arquivo de texto.
-* **`fromMap(...)`**: Faz o inverso, lendo do arquivo e transformando em objeto novamente.
+* **`paraTexto()`**: Junta os dados do livro em uma linha de texto separada por ponto e virgula para salvar no arquivo.
 * **`toString()`**: Mostra os dados formatados na tela.
 
 ---
@@ -30,25 +29,23 @@ Este arquivo contém a classe `Livro`.
 Gerencia a lista de livros e salva os dados.
 
 * **`List<Livro> meusLivros = [];`**: Lista que armazena os livros na memoria.
-* **`carregarArquivos()` e `salvarArquivos()`**:
-  * `carregarArquivos` le o arquivo `livros.txt` na pasta `Cache`.
-  * `salvarArquivos` salva a lista atual no arquivo `livros.txt`.
-* **`cadastrar(Livro l)`**: Adiciona um novo livro.
+* **`carregarLivros()`**: Le o arquivo `livros.txt` na pasta `Cache`, separa cada linha por ponto e virgula e monta os objetos de livro.
+* **`salvarLivros()`**: Percorre a lista de livros e grava cada um como uma linha no arquivo `livros.txt`.
+* **`acharPosicao(String cod)`**: Percorre a lista com um `for` e retorna a posicao do livro pelo ID.
+* **`cadastrar()`**: Adiciona um novo livro na lista e salva.
 * **`listar()`**: Imprime os livros da lista.
-* **`buscar(...)`**: Filtra a lista de livros pelo nome.
-* **`fazerEmprestimo(...)` e `devolver(...)`**: Alteram o estado `emprestado` para verdadeiro ou falso.
-* **`apagar(...)`**: Encontra a posicao do livro e remove da lista.
+* **`buscar()`**: Percorre a lista e compara o titulo digitado com os titulos dos livros.
+* **`fazerEmprestimo()` e `devolver()`**: Acham o livro pelo ID e mudam o valor de `emprestado`.
+* **`apagar()`**: Acha o livro pelo ID e remove da lista.
 
 ---
 
 ## Arquivo: `bin/biblioteca.dart`
 
-Arquivo principal.
+Arquivo principal que o usuario interage.
 
 * **`void main()`**: Funcao onde o programa inicia.
-* **`var sistema = BibliotecaApp();`**: Instancia a classe principal.
-* **`limparTela()`**: Apaga o historico do terminal para o menu ficar sempre fixo no topo.
-* **`while (rodando)`**: Loop continuo para o menu no terminal.
-* **Leitura rapida (`lineMode = false`)**: Capta a tecla digitada instantaneamente sem precisar apertar "Enter".
+* **`var sistema = BibliotecaApp();`**: Cria o objeto da biblioteca.
+* **`while (rodando)`**: Loop que repete o menu ate o usuario digitar 0.
 * **`switch (opcao)`**: Direciona o que fazer de acordo com a opcao escolhida.
-* **Espera de 5 segundos (`sleep`)**: A funcao `sleep(Duration(seconds: 5))` foi utilizada para pausar e dar tempo de ler a tela antes do menu voltar.
+* **Espera de 5 segundos**: Usa `sleep(Duration(seconds: 5))` para pausar e dar tempo de ler a resposta antes do menu voltar.

@@ -1,40 +1,45 @@
-import 'dart:convert';
 import 'dart:io';
 import 'livro.dart';
 
 class BibliotecaApp {
   List<Livro> meusLivros = [];
-  final String arquivoDados = 'Cache/livros.txt';
 
   BibliotecaApp() {
-    carregarArquivos();
+    carregarLivros();
   }
 
-  void carregarArquivos() {
-    var file = File(arquivoDados);
-    if (file.existsSync()) {
-      var texto = file.readAsStringSync();
-      if (texto.isNotEmpty) {
-        List<dynamic> listaJson = jsonDecode(texto);
-        meusLivros = listaJson.map((item) => Livro.fromMap(item)).toList();
+  void carregarLivros() {
+    var arquivo = File('Cache/livros.txt');
+    if (arquivo.existsSync()) {
+      var linhas = arquivo.readAsLinesSync();
+      for (var linha in linhas) {
+        var partes = linha.split(';');
+        if (partes.length == 4) {
+          var livro = Livro(partes[0], partes[1], partes[2]);
+          livro.emprestado = partes[3] == 'true';
+          meusLivros.add(livro);
+        }
       }
     }
   }
 
-  void salvarArquivos() {
+  void salvarLivros() {
     var pasta = Directory('Cache');
     if (!pasta.existsSync()) {
       pasta.createSync();
     }
-    var file = File(arquivoDados);
-    var listaJson = meusLivros.map((b) => b.toMap()).toList();
-    file.writeAsStringSync(jsonEncode(listaJson));
+    var arquivo = File('Cache/livros.txt');
+    var texto = '';
+    for (var livro in meusLivros) {
+      texto += livro.paraTexto() + '\n';
+    }
+    arquivo.writeAsStringSync(texto);
   }
 
-  void cadastrar(Livro l) {
-    meusLivros.add(l);
-    salvarArquivos();
-    print('Livro "${l.titulo}" cadastrado com sucesso!');
+  void cadastrar(Livro livro) {
+    meusLivros.add(livro);
+    salvarLivros();
+    print('Livro "${livro.titulo}" cadastrado com sucesso!');
   }
 
   void listar() {
@@ -42,28 +47,39 @@ class BibliotecaApp {
       print('Nenhum livro cadastrado.');
       return;
     }
-    for (var l in meusLivros) {
-      print(l);
+    for (var livro in meusLivros) {
+      print(livro);
     }
   }
 
   void buscar(String nome) {
-    var achados = meusLivros.where((b) => b.titulo.toLowerCase().contains(nome.toLowerCase())).toList();
-    if (achados.isEmpty) {
-      print('Livro não encontrado.');
-      return;
+    var achou = false;
+    for (var livro in meusLivros) {
+      if (livro.titulo.toLowerCase().contains(nome.toLowerCase())) {
+        print(livro);
+        achou = true;
+      }
     }
-    for (var l in achados) {
-      print(l);
+    if (!achou) {
+      print('Livro não encontrado.');
     }
   }
 
+  int acharPosicao(String cod) {
+    for (var i = 0; i < meusLivros.length; i++) {
+      if (meusLivros[i].id == cod) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   void fazerEmprestimo(String cod) {
-    var pos = meusLivros.indexWhere((b) => b.id == cod);
+    var pos = acharPosicao(cod);
     if (pos != -1) {
       if (!meusLivros[pos].emprestado) {
         meusLivros[pos].emprestado = true;
-        salvarArquivos();
+        salvarLivros();
         print('Livro emprestado com sucesso!');
       } else {
         print('O livro já está emprestado.');
@@ -74,11 +90,11 @@ class BibliotecaApp {
   }
 
   void devolver(String cod) {
-    var pos = meusLivros.indexWhere((b) => b.id == cod);
+    var pos = acharPosicao(cod);
     if (pos != -1) {
       if (meusLivros[pos].emprestado) {
         meusLivros[pos].emprestado = false;
-        salvarArquivos();
+        salvarLivros();
         print('Livro devolvido com sucesso!');
       } else {
         print('O livro não estava emprestado.');
@@ -89,10 +105,10 @@ class BibliotecaApp {
   }
 
   void apagar(String cod) {
-    var pos = meusLivros.indexWhere((b) => b.id == cod);
+    var pos = acharPosicao(cod);
     if (pos != -1) {
       meusLivros.removeAt(pos);
-      salvarArquivos();
+      salvarLivros();
       print('Livro removido com sucesso!');
     } else {
       print('Livro não encontrado.');

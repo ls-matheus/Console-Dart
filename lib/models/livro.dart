@@ -6,22 +6,8 @@ class Livro {
 
   Livro(this.id, this.titulo, this.autor, {this.emprestado = false});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'titulo': titulo,
-      'autor': autor,
-      'emprestado': emprestado,
-    };
-  }
-
-  factory Livro.fromMap(Map<String, dynamic> map) {
-    return Livro(
-      map['id'],
-      map['titulo'],
-      map['autor'],
-      emprestado: map['emprestado'] ?? false,
-    );
+  String paraTexto() {
+    return '$id;$titulo;$autor;$emprestado';
   }
 
   @override

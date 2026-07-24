@@ -1,1 +1,1 @@
-[{"id":"1","titulo":"Teste","autor":"eu","emprestado":false}]
+1;Teste;eu;false
