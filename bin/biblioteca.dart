@@ -18,6 +18,7 @@ void main() {
     print('Escolha uma opção:');
 
     var choice = stdin.readLineSync();
+    var shouldWait = true;
 
     switch (choice) {
       case '1':
@@ -58,13 +59,15 @@ void main() {
         break;
       case '0':
         running = false;
+        shouldWait = false;
         print('Saindo...');
         break;
       default:
         print('Opção inválida.');
+        shouldWait = false;
     }
 
-    if (running) {
+    if (running && shouldWait) {
       sleep(Duration(seconds: 5));
     }
   }
