@@ -31,8 +31,8 @@ Gerencia a lista de livros e salva os dados.
 
 * **`List<Livro> meusLivros = [];`**: Lista que armazena os livros na memoria.
 * **`carregarArquivos()` e `salvarArquivos()`**:
-  * `carregarArquivos` le o arquivo `dados.txt` na pasta `Cache`.
-  * `salvarArquivos` salva a lista atual no arquivo `dados.txt`.
+  * `carregarArquivos` le o arquivo `livros.txt` na pasta `Cache`.
+  * `salvarArquivos` salva a lista atual no arquivo `livros.txt`.
 * **`cadastrar(Livro l)`**: Adiciona um novo livro.
 * **`listar()`**: Imprime os livros da lista.
 * **`buscar(...)`**: Filtra a lista de livros pelo nome.

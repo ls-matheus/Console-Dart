@@ -4,7 +4,7 @@ import 'livro.dart';
 
 class BibliotecaApp {
   List<Livro> meusLivros = [];
-  final String arquivoDados = 'Cache/dados.txt';
+  final String arquivoDados = 'Cache/livros.txt';
 
   BibliotecaApp() {
     carregarArquivos();
