@@ -1,12 +1,12 @@
 import 'dart:io';
-import '../lib/models/book.dart';
-import '../lib/models/library.dart';
+import '../lib/models/livro.dart';
+import '../lib/models/biblioteca.dart';
 
 void main() {
-  var library = Library();
-  var running = true;
+  var sistema = BibliotecaApp();
+  var rodando = true;
 
-  while (running) {
+  while (rodando) {
     print('\n--- Sistema de Biblioteca ---');
     print('1. Cadastrar livro');
     print('2. Listar livros');
@@ -17,57 +17,57 @@ void main() {
     print('0. Sair');
     print('Escolha uma opção:');
 
-    var choice = stdin.readLineSync();
-    var shouldWait = true;
+    var opcao = stdin.readLineSync();
+    var espera = true;
 
-    switch (choice) {
+    switch (opcao) {
       case '1':
         print('Digite o ID:');
         var id = stdin.readLineSync() ?? '';
         print('Digite o Título:');
-        var title = stdin.readLineSync() ?? '';
+        var tit = stdin.readLineSync() ?? '';
         print('Digite o Autor:');
-        var author = stdin.readLineSync() ?? '';
-        if (id.isNotEmpty && title.isNotEmpty && author.isNotEmpty) {
-          library.addBook(Book(id, title, author));
+        var aut = stdin.readLineSync() ?? '';
+        if (id.isNotEmpty && tit.isNotEmpty && aut.isNotEmpty) {
+          sistema.cadastrar(Livro(id, tit, aut));
         } else {
           print('Dados inválidos.');
         }
         break;
       case '2':
-        library.listBooks();
+        sistema.listar();
         break;
       case '3':
         print('Digite o título:');
-        var title = stdin.readLineSync() ?? '';
-        library.searchBook(title);
+        var tit = stdin.readLineSync() ?? '';
+        sistema.buscar(tit);
         break;
       case '4':
         print('Digite o ID do livro para emprestar:');
         var id = stdin.readLineSync() ?? '';
-        library.borrowBook(id);
+        sistema.fazerEmprestimo(id);
         break;
       case '5':
         print('Digite o ID do livro para devolver:');
         var id = stdin.readLineSync() ?? '';
-        library.returnBook(id);
+        sistema.devolver(id);
         break;
       case '6':
         print('Digite o ID do livro para remover:');
         var id = stdin.readLineSync() ?? '';
-        library.removeBook(id);
+        sistema.apagar(id);
         break;
       case '0':
-        running = false;
-        shouldWait = false;
+        rodando = false;
+        espera = false;
         print('Saindo...');
         break;
       default:
         print('Opção inválida.');
-        shouldWait = false;
+        espera = false;
     }
 
-    if (running && shouldWait) {
+    if (rodando && espera) {
       sleep(Duration(seconds: 5));
     }
   }
