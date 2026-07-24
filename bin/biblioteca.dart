@@ -63,5 +63,9 @@ void main() {
       default:
         print('Opção inválida.');
     }
+
+    if (running) {
+      sleep(Duration(seconds: 5));
+    }
   }
 }
