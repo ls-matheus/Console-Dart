@@ -1,54 +1,53 @@
-# 📚 Documentação do Sistema de Biblioteca (Fácil de Entender)
+# Documentação do Sistema de Biblioteca
 
-Aqui está a explicação passo a passo, pensada para que você possa entender **tudo** o que fizemos e conseguir apresentar ou explicar o projeto para qualquer pessoa!
-
----
-
-## 📂 1. Como organizamos o projeto? (Arquitetura)
-
-Para não ficar tudo uma bagunça em um único arquivo, dividimos o código em **duas pastas principais**:
-
-1. **`lib/models/`**: Aqui ficam os "moldes" do nosso sistema. É a parte inteligente que diz *o que é um livro* e *como a biblioteca funciona*.
-2. **`bin/`**: Aqui fica o arquivo principal (`biblioteca.dart`) que roda o programa e mostra aquele menu no terminal.
-3. **`Cache/`**: Essa é a pastinha que guarda os nossos livros salvos no computador, como se fosse um banco de dados em formato de texto para não perdermos os dados.
+Esta é a documentação do projeto, contendo a explicação da arquitetura e o funcionamento de cada parte do código desenvolvido.
 
 ---
 
-## 📖 2. Explicando o arquivo: `lib/models/book.dart`
+## 1. Organização do Projeto (Arquitetura)
 
-Esse arquivo é como se fosse a "certidão de nascimento" de um livro. Na programação Orientada a Objetos (POO), chamamos isso de **Classe**.
+O código foi dividido em duas pastas principais para manter a organização:
 
-* **`class Book { ... }`**: Criamos a classe `Book` (Livro). Ela diz que todo livro no nosso sistema obrigatoriamente tem um `id`, um `title` (título), um `author` (autor) e um `isBorrowed` (se está emprestado ou não).
-* **`Book(this.id, ...)`**: Isso é o "Construtor". É uma maquininha que pega as informações que digitamos no terminal e cria o objeto do livro de verdade.
-* **`toMap()`**: Pega o nosso Livro (que só o Dart entende) e transforma num formato de "dicionário/mapa" de texto para podermos salvar no arquivo `.txt` da pasta Cache.
-* **`Book.fromMap(...)`**: Faz o contrário! Pega o texto que estava salvo no arquivo `.txt` e transforma de volta num Livro de verdade quando abrimos o programa.
-* **`toString()`**: Serve apenas para formatar como o livro vai aparecer na tela quando mandarmos imprimir (colocando as barrinhas verticais e dizendo "Sim" ou "Não" para emprestado).
+1. **`lib/models/`**: Contém as classes que definem a estrutura e a lógica de funcionamento do sistema.
+2. **`bin/`**: Contém o arquivo principal (`biblioteca.dart`) responsável por rodar o programa e exibir o menu interativo no terminal.
+3. **`Cache/`**: Diretório utilizado para armazenar os dados dos livros em um arquivo de texto, servindo como uma persistência de dados local.
 
 ---
 
-## 🏛️ 3. Explicando o arquivo: `lib/models/library.dart`
+## 2. Estrutura do arquivo: `lib/models/book.dart`
 
-Esse arquivo é o "Cérebro" da nossa biblioteca. É ele quem gerencia a lista de livros e faz o trabalho pesado.
+Este arquivo contém a classe que define a estrutura de um livro.
 
-* **`List<Book> books = [];`**: Criamos uma lista (como se fosse uma prateleira vazia) para guardar todos os nossos livros na memória enquanto o programa roda.
+* **`class Book`**: Define que cada livro no sistema possui um `id`, um `title` (título), um `author` (autor) e uma variável booleana `isBorrowed` (indicando se o livro está emprestado).
+* **`Book(this.id, ...)`**: O construtor da classe, responsável por instanciar um novo livro com as informações fornecidas.
+* **`toMap()`**: Converte o objeto do livro para uma estrutura de mapa (chave e valor), permitindo que os dados sejam posteriormente convertidos em formato JSON e salvos no arquivo de texto.
+* **`Book.fromMap(...)`**: Realiza o processo inverso, recebendo um mapa (leitura do arquivo) e instanciando um objeto do tipo Book novamente.
+* **`toString()`**: Sobrescreve o método padrão para exibir as informações do livro de forma formatada quando impresso no terminal.
+
+---
+
+## 3. Estrutura do arquivo: `lib/models/library.dart`
+
+Este arquivo gerencia a lógica principal e a coleção de livros.
+
+* **`List<Book> books = [];`**: Uma lista em memória que armazena os livros carregados enquanto a aplicação está em execução.
 * **`_loadBooks()` e `_saveBooks()`**:
-  * Quando a biblioteca é "ligada", o `_loadBooks` vai na pasta secreta `Cache`, abre o arquivo `books.txt`, lê o que está lá dentro e coloca os livros de volta na prateleira.
-  * O `_saveBooks` faz o inverso: sempre que a gente faz alguma mudança (cadastra, remove, etc), ele pega a prateleira inteira e guarda no arquivo `books.txt` para não perdermos nada se fechar o programa.
-* **`addBook(Book book)`**: Pega um livro novo, coloca na lista (prateleira) e chama o `_saveBooks` para salvar no PC.
-* **`listBooks()`**: Simplesmente faz um laço de repetição (um `for`) que passa por todos os livros da prateleira imprimindo um por um.
-* **`searchBook(...)`**: Procura um livro. Ele filtra a lista comparando o que você digitou com os títulos dos livros (ignorando letras maiúsculas/minúsculas para facilitar).
-* **`borrowBook(...)` e `returnBook(...)`**: Eles procuram o livro pelo ID e mudam o "status" dele (`isBorrowed = true` para emprestado, e `false` para devolvido). Depois, salvam no PC.
-* **`removeBook(...)`**: Acha a posição do livro na prateleira pelo ID e apaga ele da lista (depois salva no PC).
+  * O método `_loadBooks` é executado ao inicializar a classe. Ele lê o arquivo `books.txt` no diretório `Cache` e carrega os objetos para a memória.
+  * O método `_saveBooks` serializa a lista atual de livros para o formato JSON e sobrescreve o arquivo `books.txt`. Ele é chamado após qualquer modificação nos dados (cadastro, remoção, empréstimo, etc.).
+* **`addBook(Book book)`**: Adiciona um novo objeto de livro à lista e persiste a alteração.
+* **`listBooks()`**: Itera sobre a lista de livros em memória e imprime cada um no console.
+* **`searchBook(...)`**: Filtra a lista de livros comparando o título buscado com os títulos existentes, ignorando a diferença entre maiúsculas e minúsculas.
+* **`borrowBook(...)` e `returnBook(...)`**: Buscam o livro pelo ID e alteram o estado da propriedade `isBorrowed` para verdadeiro ou falso, persistindo a alteração na sequência.
+* **`removeBook(...)`**: Encontra a posição do livro na lista através do ID e o remove, salvando o novo estado no arquivo.
 
 ---
 
-## 🖥️ 4. Explicando o arquivo: `bin/biblioteca.dart`
+## 4. Estrutura do arquivo: `bin/biblioteca.dart`
 
-Esse é a porta de entrada. É o arquivo que lida com você (o usuário).
+Este arquivo é o ponto de entrada da aplicação, responsável pela interação com o usuário via terminal.
 
-* **`void main()`**: O Dart sempre procura essa palavra `main` para saber por onde o programa começa. Sem ela, o código não roda.
-* **`var library = Library();`**: Aqui a gente "inicia" a nossa biblioteca para poder usar as funções dela.
-* **`while (running)`**: É um "loop" infinito. Ele garante que o menu continue aparecendo na tela várias vezes até você escolher a opção de sair (`0`), que quebra o loop.
-* **`switch (choice)`**: É um painel de controle. Ele pega a opção que você digitou no menu (`1, 2, 3...`) e direciona para a ação correta. 
-  * Exemplo: se você digitar `1`, ele pede o ID, Título e Autor, e então envia essas palavras para o cérebro da biblioteca em `library.addBook()`.
-* **A espera de 5 segundos (`sleep`)**: Toda vez que ele termina de executar uma ação (como listar os livros), usamos o comando `sleep(Duration(seconds: 5))` para "congelar" o tempo por 5 segundos. Assim você tem tempo para ler a resposta antes que o menu apague e apareça de novo.
+* **`void main()`**: A função principal obrigatória na linguagem Dart, onde a execução do programa se inicia.
+* **`var library = Library();`**: Instancia a classe principal do sistema para possibilitar o uso de seus métodos.
+* **`while (running)`**: Um laço de repetição (loop) contínuo que mantém o menu ativo e sendo reexibido até que a variável `running` torne-se falsa.
+* **`switch (choice)`**: Estrutura de controle que direciona o fluxo da aplicação de acordo com a opção escolhida pelo usuário (1 a 6).
+* **Delay de 5 segundos (`sleep`)**: A função `sleep(Duration(seconds: 5))` foi utilizada para pausar a execução após uma operação, permitindo que o usuário tenha tempo hábil para ler a resposta da ação antes que o menu seja impresso na tela novamente.
