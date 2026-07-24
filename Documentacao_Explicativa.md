@@ -47,6 +47,8 @@ Arquivo principal.
 
 * **`void main()`**: Funcao onde o programa inicia.
 * **`var sistema = BibliotecaApp();`**: Instancia a classe principal.
+* **`limparTela()`**: Apaga o historico do terminal para o menu ficar sempre fixo no topo.
 * **`while (rodando)`**: Loop continuo para o menu no terminal.
+* **Leitura rapida (`lineMode = false`)**: Capta a tecla digitada instantaneamente sem precisar apertar "Enter".
 * **`switch (opcao)`**: Direciona o que fazer de acordo com a opcao escolhida.
 * **Espera de 5 segundos (`sleep`)**: A funcao `sleep(Duration(seconds: 5))` foi utilizada para pausar e dar tempo de ler a tela antes do menu voltar.
